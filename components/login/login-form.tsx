@@ -25,7 +25,7 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50 p-6">
+    <div className="flex justify-center items-center mt-20 bg-gray-50 p-6">
       <div className="w-full max-w-md shadow-lg rounded-2xl p-6 bg-white">
         {/* Header */}
         <h1 className="text-3xl font-bold text-center mb-6 text-green-700">

@@ -4,7 +4,7 @@ import { Suspense } from "react";
 
 export default function Home() {
   return (
-    <div className="flex flex-col mx-5 my-10 gap-4">
+    <div className="flex flex-col mx-5 mt-10 gap-4 mb-16">
       <div className=" text-center">
         <h1 className="text-4xl font-bold">Order Your Perfect Coffee</h1>
         <p className="text-lg text-gray-500 mt-4">
