@@ -9,6 +9,7 @@ type UserStore = {
   username: string;
   token: string;
   role: Role | null;
+  isHydrated: boolean;
   login: (loginData: LoginForm, roleData: Role) => Promise<void>;
   logout: () => void;
 };
@@ -17,6 +18,7 @@ const userStore = (set: any): UserStore => ({
   username: "",
   token: "",
   role: null,
+  isHydrated: false,
   login: async (loginData: LoginForm, roleData: Role) => {
     let data;
     try {
@@ -38,4 +40,11 @@ const userStore = (set: any): UserStore => ({
   },
 });
 
-export default create<UserStore>()(persist(userStore, { name: "user" }));
+export default create<UserStore>()(
+  persist(userStore, {
+    name: "user",
+    onRehydrateStorage: () => (state) => {
+      if (state) state.isHydrated = true;
+    },
+  })
+);
