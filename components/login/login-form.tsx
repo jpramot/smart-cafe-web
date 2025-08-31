@@ -6,14 +6,13 @@ import { loginSchema } from "@/libs/schema/login.schema";
 import { type LoginForm } from "@/types/login.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 export default function LoginForm() {
   const login = userStore((state) => state.login);
   const [role, setRole] = useState<Role>(Role.USER);
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
 
   const {
     register,
@@ -24,14 +23,15 @@ export default function LoginForm() {
   });
 
   const onSubmit: SubmitHandler<LoginForm> = async (data: LoginForm) => {
-    startTransition(async () => {
-      try {
-        await login(data, role);
+    try {
+      const uesrRole = await login(data, role);
+      if (uesrRole === Role.USER) {
         router.replace("/");
-      } catch (error) {
-        console.log(error);
       }
-    });
+      router.replace("/barista");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

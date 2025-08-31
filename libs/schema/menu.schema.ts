@@ -1,4 +1,5 @@
 import z from "zod";
+import { toppingSchema } from "./toppings.schema";
 
 export const menuSchema = z
   .object({
@@ -13,10 +14,19 @@ export const menuSchema = z
 
 export const menusSchema = z.array(menuSchema);
 
+export const menuWithToppingsSchema = z.object({
+  menu: menuSchema,
+  toppings: toppingSchema.array(),
+});
+
 export const validateMenus = (menus: any): z.infer<typeof menusSchema> => {
   return menusSchema.parse(menus);
 };
 
 export const validateMenu = (menu: any): z.infer<typeof menuSchema> => {
   return menuSchema.parse(menu);
+};
+
+export const validateMenuWithToppings = (menu: any): z.infer<typeof menuWithToppingsSchema> => {
+  return menuWithToppingsSchema.parse(menu);
 };

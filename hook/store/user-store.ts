@@ -2,6 +2,7 @@ import { Role } from "@/enum/role";
 import { baristaLogin, userLogin } from "@/libs/apis/auth";
 import { LoginForm } from "@/types/login.type";
 import { isAxiosError } from "axios";
+import { da } from "zod/locales";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -10,7 +11,7 @@ type UserStore = {
   token: string;
   role: Role | null;
   isHydrated: boolean;
-  login: (loginData: LoginForm, roleData: Role) => Promise<void>;
+  login: (loginData: LoginForm, roleData: Role) => Promise<Role>;
   logout: () => void;
 };
 
@@ -28,6 +29,11 @@ const userStore = (set: any): UserStore => ({
         data = await baristaLogin(loginData);
       }
       set({ username: data.username, token: data.token, role: data.role });
+      if (data.role === Role.USER) {
+        return Role.USER;
+      } else {
+        return Role.BARISTA;
+      }
     } catch (error) {
       if (isAxiosError(error)) {
         throw error;
