@@ -1,16 +1,19 @@
 "use client";
 
-import { baristaLogin, userLogin } from "@/libs/apis/auth";
+import { Role } from "@/enum/role";
+import userStore from "@/hook/store/user-store";
 import { loginSchema } from "@/libs/schema/login.schema";
 import { type LoginForm } from "@/types/login.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useState, useTransition } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 export default function LoginForm() {
-  const [role, setRole] = useState<"user" | "barista">("user");
+  const login = userStore((state) => state.login);
+  const [role, setRole] = useState<Role>(Role.USER);
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
   const {
     register,
@@ -20,18 +23,15 @@ export default function LoginForm() {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = async (data: LoginForm) => {
-    console.log("Login with role:", role, "data:", data);
-    try {
-      if (role === "user") {
-        await userLogin(data);
-      } else if (role === "barista") {
-        await baristaLogin(data);
+  const onSubmit: SubmitHandler<LoginForm> = async (data: LoginForm) => {
+    startTransition(async () => {
+      try {
+        await login(data, role);
+        router.replace("/");
+      } catch (error) {
+        console.log(error);
       }
-      router.replace("/");
-    } catch (error) {
-      console.log(error);
-    }
+    });
   };
 
   return (
@@ -39,7 +39,7 @@ export default function LoginForm() {
       <div className="w-full max-w-md shadow-lg rounded-2xl p-6 bg-white">
         {/* Header */}
         <h1 className="text-3xl font-bold text-center mb-6 text-green-700">
-          {role === "user" ? "User Login" : "Barista Login"}
+          {role === Role.USER ? "User Login" : "Barista Login"}
         </h1>
 
         {/* Role Switch */}
@@ -47,18 +47,18 @@ export default function LoginForm() {
           <button
             type="button"
             className={`px-4 py-2 rounded-md ${
-              role === "user" ? "bg-green-700 text-white" : "bg-gray-200 text-gray-700"
+              role === Role.USER ? "bg-green-700 text-white" : "bg-gray-200 text-gray-700"
             }`}
-            onClick={() => setRole("user")}
+            onClick={() => setRole(Role.USER)}
           >
             User
           </button>
           <button
             type="button"
             className={`px-4 py-2 rounded-md ${
-              role === "barista" ? "bg-green-700 text-white" : "bg-gray-200 text-gray-700"
+              role === Role.BARISTA ? "bg-green-700 text-white" : "bg-gray-200 text-gray-700"
             }`}
-            onClick={() => setRole("barista")}
+            onClick={() => setRole(Role.BARISTA)}
           >
             Barista
           </button>
@@ -110,7 +110,7 @@ export default function LoginForm() {
 
         {/* Extra */}
         <p className="text-center text-sm text-gray-500 mt-6">
-          {role === "user"
+          {role === Role.USER
             ? "Login as customer to order drinks."
             : "Login as barista to manage orders."}
         </p>
