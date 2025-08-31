@@ -23,6 +23,7 @@ export default function Header() {
             href="/cart"
             icon={<ShoppingCart className="h-4 w-4 mr-2" />}
           />
+          <CustomLinkButton label="Login" href="/login" />
         </div>
       </div>
     </header>
