@@ -1,13 +1,16 @@
 "use client";
 
+import { baristaLogin, userLogin } from "@/libs/apis/auth";
 import { loginSchema } from "@/libs/schema/login.schema";
 import { type LoginForm } from "@/types/login.type";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 export default function LoginForm() {
   const [role, setRole] = useState<"user" | "barista">("user");
+  const router = useRouter();
 
   const {
     register,
@@ -17,11 +20,18 @@ export default function LoginForm() {
     resolver: zodResolver(loginSchema),
   });
 
-  // ✅ handle login
   const onSubmit = async (data: LoginForm) => {
     console.log("Login with role:", role, "data:", data);
-    // call API เช่น POST /auth/login
-    // payload: { ...data, role }
+    try {
+      if (role === "user") {
+        await userLogin(data);
+      } else if (role === "barista") {
+        await baristaLogin(data);
+      }
+      router.replace("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

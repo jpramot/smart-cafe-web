@@ -18,7 +18,9 @@ export default function MenuCard({ id, name, price, image, description, category
       <Image
         src={image}
         alt={name}
+        sizes="100%"
         fill
+        priority
         className="object-cover transition-transform duration-300 ease-in-out hover:scale-105 w-full"
       />
     </div>
