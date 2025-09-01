@@ -1,5 +1,6 @@
 "use client";
 
+import { OrderResponse } from "@/types/order.type";
 import { Card } from "primereact/card";
 import { useState } from "react";
 
@@ -51,8 +52,12 @@ const orders = [
   },
 ];
 
-export default function BaristaDashBoard() {
-  const [data, setData] = useState(orders);
+type BaristaDashBoardProps = {
+  orders: OrderResponse[] | null;
+};
+
+export default function BaristaDashBoard({ orders }: BaristaDashBoardProps) {
+  // const [data, setData] = useState(orders);
   return (
     <section className="py-6 px-6 grid grid-cols-1 md:grid-cols-3 gap-4">
       <Card
@@ -60,7 +65,7 @@ export default function BaristaDashBoard() {
         className="border border-gray-200 rounded-md shadow-sm p-4 min-h-full"
       >
         <p className="text-2xl font-bold text-yellow-600 my-3">
-          {data.filter((o) => o.status === "preparing").length}
+          {orders?.filter((o) => o.status === "PREPARING").length || 0}
         </p>
         <p className="text-sm text-gray-500">Orders in progress</p>
       </Card>
@@ -70,7 +75,7 @@ export default function BaristaDashBoard() {
         className="border border-gray-200 rounded-md shadow-sm p-4"
       >
         <p className="text-2xl font-bold text-green-600 my-3">
-          {data.filter((o) => o.status === "ready").length}
+          {orders?.filter((o) => o.status === "READY").length || 0}
         </p>
         <p className="text-sm text-gray-500">Ready for pickup</p>
       </Card>
@@ -80,7 +85,7 @@ export default function BaristaDashBoard() {
         className="border border-gray-200 rounded-md shadow-sm p-4"
       >
         <p className="text-2xl font-bold text-gray-600 my-3">
-          {data.filter((o) => o.status === "completed").length}
+          {orders?.filter((o) => o.status === "COMPLETE").length || 0}
         </p>
         <p className="text-sm text-gray-500">Orders completed today</p>
       </Card>

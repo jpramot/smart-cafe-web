@@ -1,6 +1,6 @@
 import { CreateOrderBody } from "@/types/order.type";
 import { api } from "./axios";
-import { validateOrderResponse } from "../schema/order.schema";
+import { validateOrderResponse, validateOrdersResponse } from "../schema/order.schema";
 import { ZodError } from "zod";
 
 export const createOrder = async (orderData: CreateOrderBody) => {
@@ -12,14 +12,25 @@ export const createOrder = async (orderData: CreateOrderBody) => {
 export const trackOrder = async (orderId: string) => {
   try {
     const { data } = await api.get(`/orders?orderId=${orderId}`);
-    console.log("data", data);
     return validateOrderResponse(data);
   } catch (error) {
     if (error instanceof ZodError) {
-      console.log("zod error: ", error);
       return null;
     }
     console.log(error);
+    return null;
+  }
+};
+
+export const getAllOrder = async () => {
+  try {
+    const { data } = await api.get("/orders/all");
+    console.log(data);
+    return validateOrdersResponse(data.orders);
+  } catch (error) {
+    if (error instanceof ZodError) {
+      return null;
+    }
     return null;
   }
 };

@@ -27,6 +27,12 @@ export const orderSchemaResponse = z.object({
   ),
 });
 
+export const ordersSchemaResponse = z.array(orderSchemaResponse);
+
 export const validateOrderResponse = (order: any): z.infer<typeof orderSchemaResponse> => {
   return orderSchemaResponse.parse(order);
+};
+
+export const validateOrdersResponse = (orders: any): z.infer<typeof ordersSchemaResponse> => {
+  return ordersSchemaResponse.parse(orders);
 };
