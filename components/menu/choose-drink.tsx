@@ -3,6 +3,7 @@
 import cartStore from "@/hook/store/cart-store";
 import { Menu } from "@/types/menu.type";
 import { Topping } from "@/types/topping";
+import { useRouter } from "next/navigation";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { useState } from "react";
@@ -17,6 +18,10 @@ export default function ChooseDrink({ drink, toppings }: ChooseDrinkProps) {
     { id: number; name: string; price: number }[]
   >([]);
   const addToCart = cartStore((state) => state.addToCart);
+  const router = useRouter();
+
+  const drinkPrice =
+    drink.price + selectedToppings.reduce((total, topping) => total + topping.price, 0);
 
   const hdlChangeQty = (value: number) => {
     setQuantity((cur) => {
@@ -49,9 +54,11 @@ export default function ChooseDrink({ drink, toppings }: ChooseDrinkProps) {
       image: drink.image,
       toppings: selectedToppings,
     });
-    console.log("selectedToppings", selectedToppings);
-    // alert(`Added ${qty} x drink ${drinkId} with ${tops.length} toppings!`);
+    setSelectedToppings([]);
+    setQuantity(1);
+    router.push("/cart");
   };
+
   return (
     <div className="grid grid-cols-1 gap-6 items-stretch">
       <Card
@@ -132,14 +139,15 @@ export default function ChooseDrink({ drink, toppings }: ChooseDrinkProps) {
           <div className="flex justify-between gap-4 items-center">
             <p className="text-lg font-semibold text-gray-700">
               Total: ฿
-              {(
+              {/* {(
                 quantity *
                 (drink.price +
                   selectedToppings.reduce(
                     (sum, top) => sum + (toppings.find((t) => t.id === top.id)?.price || 0),
                     0
                   ))
-              ).toFixed(2)}
+              ).toFixed(2)} */}
+              {drinkPrice.toFixed(2)}
             </p>
             <Button
               className="bg-green-700 text-white hover:bg-green-800 rounded-md p-3"

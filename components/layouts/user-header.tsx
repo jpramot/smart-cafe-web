@@ -5,9 +5,11 @@ import Link from "next/link";
 import userStore from "@/hook/store/user-store";
 import CustomButton from "../ui/custom-button";
 import { useRouter } from "next/navigation";
+import cartStore from "@/hook/store/cart-store";
 
 export default function UserHeader() {
   const username = userStore((state) => state.username);
+  const totalItems = cartStore((state) => state.cart.length);
   const logout = userStore((state) => state.logout);
   const router = useRouter();
 
@@ -25,7 +27,6 @@ export default function UserHeader() {
           </Link>
         </div>
         <div className="flex  gap-4">
-          {/* <CustomButton label="Track Order" icon={<Clock className="h-4 w-4 mr-2" />} /> */}
           {username && (
             <CustomLinkButton
               label="Track Order"
@@ -37,9 +38,19 @@ export default function UserHeader() {
             <CustomLinkButton
               label="Cart"
               href="/cart"
-              icon={<ShoppingCart className="h-4 w-4 mr-2" />}
+              icon={
+                <div className="relative">
+                  <ShoppingCart className="h-4 w-4 mr-2" />
+                  {totalItems > 0 && (
+                    <span className="absolute -top-2 -right-1 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
+                      {totalItems}
+                    </span>
+                  )}
+                </div>
+              }
             />
           )}
+
           {username ? (
             <CustomButton
               label="Log out"
@@ -49,8 +60,6 @@ export default function UserHeader() {
           ) : (
             <CustomLinkButton label="Login" href="/login" />
           )}
-          {/* <CustomLinkButton label="Login" href="/login" />
-          <CustomButton label="Log out" className="p-button-outlined p-button-sm" click={logout} /> */}
         </div>
       </div>
     </header>

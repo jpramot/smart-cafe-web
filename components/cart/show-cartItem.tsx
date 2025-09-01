@@ -10,6 +10,7 @@ import { useEffect } from "react";
 export default function ShowCartItems() {
   const items = cartStore((state) => state.cart);
   const getMe = userStore((state) => state.getMe);
+  const deleteFromCart = cartStore((state) => state.deleteFromCart);
   const router = useRouter();
   const total = items.reduce(
     (sum, item) =>
@@ -17,7 +18,9 @@ export default function ShowCartItems() {
       (item.price + (item.toppings?.reduce((tSum, t) => tSum + t.price, 0) || 0)) * item.quantity,
     0
   );
-
+  const hdlDeleteDrinkFromCart = (id: number, price: number) => {
+    deleteFromCart(id, price);
+  };
   useEffect(() => {
     (async () => {
       const response = await getMe();
@@ -32,8 +35,8 @@ export default function ShowCartItems() {
         <p className="text-gray-500 text-center py-10">Your cart is empty ☕</p>
       ) : (
         <ul className="divide-y divide-gray-200">
-          {items.map((item) => (
-            <li key={item.id} className="flex items-start py-4 gap-4">
+          {items.map((item, idx) => (
+            <li key={idx} className="flex items-start py-4 gap-4">
               <img src={item.image} alt={item.name} className="w-20 h-20 rounded-md object-cover" />
 
               <div className="flex-1">
@@ -67,12 +70,10 @@ export default function ShowCartItems() {
               </div>
 
               <div className="text-right font-medium">
-                {/* ฿
-                  {(
-                    (item.price + (item.toppings?.reduce((t, tp) => t + tp.price, 0) ?? 0)) *
-                    item.quantity
-                  ).toFixed(2)} */}
-                <button onClick={() => {}} className="text-gray-400 hover:text-red-500">
+                <button
+                  onClick={() => hdlDeleteDrinkFromCart(item.id, item.price)}
+                  className="text-gray-400 hover:text-red-500"
+                >
                   <X size={20} />
                 </button>
               </div>
