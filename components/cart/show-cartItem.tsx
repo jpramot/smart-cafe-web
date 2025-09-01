@@ -45,7 +45,8 @@ export default function ShowCartItems() {
       return;
     }
     console.log("create");
-    await createOrder(data);
+    const response = await createOrder(data);
+    router.replace(`/track?orderId=${response.id}`);
   };
 
   useEffect(() => {

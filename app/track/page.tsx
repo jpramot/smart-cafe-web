@@ -1,8 +1,13 @@
 import TrackInput from "@/components/track/track-input";
 import TrackedOrder from "@/components/track/tracked-order";
-import { notFound } from "next/navigation";
+import { number } from "zod";
 
-export default function TrackPage() {
+type TrackPageProps = {
+  searchParams: Promise<{ [k: string]: string | undefined }>;
+};
+
+export default async function TrackPage({ searchParams }: TrackPageProps) {
+  const { orderId = "" } = await searchParams;
   return (
     <section className="py-12 px-4">
       <div className=" max-w-2xl mx-auto">
@@ -15,7 +20,7 @@ export default function TrackPage() {
         <TrackInput />
       </div>
       <div className="w-[500px] mx-auto">
-        <TrackedOrder />
+        <TrackedOrder search={orderId} />
       </div>
     </section>
   );

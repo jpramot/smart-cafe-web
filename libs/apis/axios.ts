@@ -12,11 +12,13 @@ api.interceptors.request.use(
     if (token) {
       console.log("add header");
       config.headers.Authorization = `Bearer ${token}`;
+    } else {
+      console.log("no token");
     }
-    console.log("no token");
     return config;
   },
   (error) => {
+    console.log(error);
     return Promise.reject(error);
   }
 );

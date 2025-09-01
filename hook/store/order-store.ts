@@ -1,4 +1,4 @@
-import { createOrder } from "@/libs/apis/order";
+import { createOrder, trackOrder } from "@/libs/apis/order";
 import { CreateOrderBody, OrderResponse } from "@/types/order.type";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
@@ -8,6 +8,7 @@ type OrderStore = {
   orders: OrderResponse[];
   order: OrderResponse | null;
   createOrder: (orderData: CreateOrderBody) => Promise<{ id: number }>;
+  trackOrder: (orderId: string) => Promise<void>;
 };
 
 const orderStore = (set: any) => ({
@@ -18,6 +19,12 @@ const orderStore = (set: any) => ({
     const data = await createOrder(orderData);
     clearCart();
     return { id: data.id };
+  },
+  trackOrder: async (orderId: string) => {
+    console.log("order store");
+    const response = await trackOrder(orderId);
+    console.log(response);
+    set({ order: response });
   },
 });
 

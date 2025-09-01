@@ -17,13 +17,14 @@ export const orderSchemaResponse = z.object({
   createdAt: z.string(),
   status: z.string(),
   totalPrice: z.number(),
-  //   items: z.array(
-  //     z.object({
-  //       menuId: z.number(),
-  //       topping: z.array(z.number()).default([]),
-  //       quantity: z.number().min(1),
-  //     })
-  //   ),
+  items: z.array(
+    z.object({
+      name: z.string(),
+      toppings: z.array(z.object({ name: z.string(), price: z.number() })).default([]),
+      quantity: z.number().min(1),
+      price: z.number(),
+    })
+  ),
 });
 
 export const validateOrderResponse = (order: any): z.infer<typeof orderSchemaResponse> => {

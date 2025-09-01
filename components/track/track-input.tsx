@@ -6,8 +6,12 @@ import { TrackForm } from "@/types/track.type";
 import { trackFormSchema } from "@/libs/schema/track.schema";
 import CustomButton from "../ui/custom-button";
 import { Search } from "lucide-react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export default function TrackInput() {
+  const pathName = usePathname();
+  const oldSearch = useSearchParams();
+  const router = useRouter();
   const {
     formState: { errors },
     handleSubmit,
@@ -15,7 +19,13 @@ export default function TrackInput() {
   } = useForm<TrackForm>({ resolver: zodResolver(trackFormSchema) });
 
   const onSubmit = (data: TrackForm) => {
-    console.log(data);
+    const searchParams = new URLSearchParams(oldSearch);
+    if (data.orderId.trim()) {
+      searchParams.set("orderId", data.orderId);
+    } else {
+      searchParams.delete("orderId");
+    }
+    router.replace(`${pathName}?${searchParams.toString()}`);
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex gap-2 mb-8">
