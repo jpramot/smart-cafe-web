@@ -10,8 +10,10 @@ api.interceptors.request.use(
   (config) => {
     const token = userStore.getState().token;
     if (token) {
+      console.log("add header");
       config.headers.Authorization = `Bearer ${token}`;
     }
+    console.log("no token");
     return config;
   },
   (error) => {

@@ -1,7 +1,11 @@
 "use client";
 
 import cartStore from "@/hook/store/cart-store";
+import orderStore from "@/hook/store/order-store";
 import userStore from "@/hook/store/user-store";
+
+import { createOrderSchema } from "@/libs/schema/order.schema";
+import { CreateOrderBody } from "@/types/order.type";
 
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -11,6 +15,8 @@ export default function ShowCartItems() {
   const items = cartStore((state) => state.cart);
   const getMe = userStore((state) => state.getMe);
   const deleteFromCart = cartStore((state) => state.deleteFromCart);
+  const createOrder = orderStore((state) => state.createOrder);
+
   const router = useRouter();
   const total = items.reduce(
     (sum, item) =>
@@ -18,9 +24,30 @@ export default function ShowCartItems() {
       (item.price + (item.toppings?.reduce((tSum, t) => tSum + t.price, 0) || 0)) * item.quantity,
     0
   );
+
   const hdlDeleteDrinkFromCart = (id: number, price: number) => {
     deleteFromCart(id, price);
   };
+
+  const hdlCreateOrder = async () => {
+    console.log("first");
+    const rawData: CreateOrderBody = {
+      items: items.map((item) => ({
+        menuId: item.id,
+        quantity: item.quantity,
+        topping: item.toppings?.map((t) => t.id) || [],
+      })),
+      totalPrice: total,
+    };
+    const { data, success, error } = createOrderSchema.safeParse(rawData);
+    if (!success) {
+      console.log(error);
+      return;
+    }
+    console.log("create");
+    await createOrder(data);
+  };
+
   useEffect(() => {
     (async () => {
       const response = await getMe();
@@ -87,7 +114,7 @@ export default function ShowCartItems() {
         <div className="mt-6 border-t pt-4 flex justify-between items-center">
           <p className="text-lg font-bold">Total: ฿{total.toFixed(2)}</p>
           <button
-            onClick={() => {}}
+            onClick={hdlCreateOrder}
             className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition"
           >
             Checkout

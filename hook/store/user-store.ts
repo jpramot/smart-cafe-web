@@ -33,7 +33,6 @@ const userStore = (set: any, get: any): UserStore => ({
       }
       set({ username: data.username, token: data.token, role: data.role });
       if (data.role === Role.USER) {
-        console.log("data.role", data.role);
         return Role.USER;
       } else {
         return Role.BARISTA;
