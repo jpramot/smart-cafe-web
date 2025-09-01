@@ -1,4 +1,5 @@
 import { CartItem } from "@/types/cart.type";
+import { ca } from "zod/locales";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -7,6 +8,7 @@ type CartStore = {
   isCartHydrated: boolean;
   addToCart: (item: CartItem) => void;
   deleteFromCart: (id: number) => void;
+  clearCart: () => void;
 };
 
 const cartStore = (set: any): CartStore => ({
@@ -21,6 +23,9 @@ const cartStore = (set: any): CartStore => ({
     set((state: CartStore) => ({
       cart: state.cart.filter((item) => item.id !== id),
     }));
+  },
+  clearCart: () => {
+    set({ cart: [] });
   },
 });
 

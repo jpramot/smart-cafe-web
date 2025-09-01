@@ -15,3 +15,12 @@ export const baristaLogin = async (loginData: LoginForm) => {
     throw error;
   }
 };
+
+export const getMe = async () => {
+  try {
+    const { data } = await api.get("/auth/user/me");
+    return validateLoginResponse(data);
+  } catch (error) {
+    throw error;
+  }
+};

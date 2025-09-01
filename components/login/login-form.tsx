@@ -27,8 +27,9 @@ export default function LoginForm() {
       const uesrRole = await login(data, role);
       if (uesrRole === Role.USER) {
         router.replace("/");
+      } else {
+        router.replace("/barista");
       }
-      router.replace("/barista");
     } catch (error) {
       console.log(error);
     }

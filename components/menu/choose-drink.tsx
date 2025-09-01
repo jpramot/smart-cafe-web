@@ -1,166 +1,56 @@
 "use client";
 
+import cartStore from "@/hook/store/cart-store";
 import { Menu } from "@/types/menu.type";
 import { Topping } from "@/types/topping";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { useState } from "react";
 
-const drinks = [
-  {
-    id: 1,
-    name: "Café Latte",
-    price: 65,
-    description: "Smooth espresso with steamed milk.",
-    image:
-      "https://res.cloudinary.com/dmzla7cgd/image/upload/v1756455515/espresso-coffee-cup_rebjai.png",
-  },
-];
-
-const toppings = [
-  {
-    id: 1,
-    name: "Extra Shot",
-    price: 15,
-    image: "https://res.cloudinary.com/dmzla7cgd/image/upload/v1756456139/espresso-shot_wovsjz.png",
-    category: "Coffee",
-  },
-  {
-    id: 2,
-    name: "Decaf",
-    price: 0,
-    image: "https://res.cloudinary.com/dmzla7cgd/image/upload/v1756456139/espresso-shot_wovsjz.png",
-    category: "Coffee",
-  },
-  {
-    id: 3,
-    name: "Oat Milk",
-    price: 10,
-    image:
-      "https://res.cloudinary.com/dmzla7cgd/image/upload/v1756456138/oat-milk-carton_ssqujo.png",
-    category: "Milk",
-  },
-  {
-    id: 4,
-    name: "Almond Milk",
-    price: 10,
-    image:
-      "https://res.cloudinary.com/dmzla7cgd/image/upload/v1756456137/almond-milk-pouring_nk3ivd.png",
-    category: "Milk",
-  },
-  {
-    id: 5,
-    name: "Soy Milk",
-    price: 10,
-    image:
-      "https://res.cloudinary.com/dmzla7cgd/image/upload/v1756456137/almond-milk-pouring_nk3ivd.png",
-    category: "Milk",
-  },
-  {
-    id: 6,
-    name: "Coconut Milk",
-    price: 12,
-    image: "https://res.cloudinary.com/dmzla7cgd/image/upload/v1756456141/coconut-milk_bdiafw.png",
-    category: "Milk",
-  },
-  {
-    id: 7,
-    name: "Extra Hot",
-    price: 0,
-    image:
-      "https://res.cloudinary.com/dmzla7cgd/image/upload/v1756456139/hot-temperature_izjmgv.png",
-    category: "Temperature",
-  },
-  {
-    id: 8,
-    name: "Extra Foam",
-    price: 5,
-    image: "https://res.cloudinary.com/dmzla7cgd/image/upload/v1756456143/milk-foam_jcqmpv.png",
-    category: "Texture",
-  },
-  {
-    id: 9,
-    name: "No Foam",
-    price: 0,
-    image: "https://res.cloudinary.com/dmzla7cgd/image/upload/v1756456143/milk-foam_jcqmpv.png",
-    category: "Texture",
-  },
-  {
-    id: 10,
-    name: "Vanilla Syrup",
-    price: 8,
-    image: "https://res.cloudinary.com/dmzla7cgd/image/upload/v1756456143/vanilla-syrup_vrvfbt.png",
-    category: "Syrup",
-  },
-  {
-    id: 11,
-    name: "Caramel Syrup",
-    price: 8,
-    image: "https://res.cloudinary.com/dmzla7cgd/image/upload/v1756456138/caramel-syrup_v91okz.png",
-    category: "Syrup",
-  },
-  {
-    id: 12,
-    name: "Hazelnut Syrup",
-    price: 8,
-    image:
-      "https://res.cloudinary.com/dmzla7cgd/image/upload/v1756456138/hazelnut-syrup_g13e2j.png",
-    category: "Syrup",
-  },
-  {
-    id: 13,
-    name: "Sugar Free Vanilla",
-    price: 8,
-    image: "https://res.cloudinary.com/dmzla7cgd/image/upload/v1756456143/vanilla-syrup_vrvfbt.png",
-    category: "Syrup",
-  },
-  {
-    id: 14,
-    name: "Whipped Cream",
-    price: 10,
-    image: "https://res.cloudinary.com/dmzla7cgd/image/upload/v1756456139/whipped-cream_n6easx.png",
-    category: "Topping",
-  },
-  {
-    id: 15,
-    name: "Cinnamon Powder",
-    price: 5,
-    image: "https://res.cloudinary.com/dmzla7cgd/image/upload/v1756456139/whipped-cream_n6easx.png",
-    category: "Topping",
-  },
-];
-
 type ChooseDrinkProps = {
   drink: Menu;
   toppings: Topping[];
 };
 export default function ChooseDrink({ drink, toppings }: ChooseDrinkProps) {
-  const [quantities, setQuantities] = useState<Record<number, number>>({});
-  const [selectedToppings, setSelectedToppings] = useState<Record<number, number[]>>({});
+  const [quantity, setQuantity] = useState<number>(1);
+  const [selectedToppings, setSelectedToppings] = useState<
+    { id: number; name: string; price: number }[]
+  >([]);
+  const addToCart = cartStore((state) => state.addToCart);
 
-  const handleIncrement = (drinkId: number) => {
-    setQuantities((prev) => ({ ...prev, [drinkId]: (prev[drinkId] || 1) + 1 }));
-  };
-
-  const handleDecrement = (drinkId: number) => {
-    setQuantities((prev) => ({ ...prev, [drinkId]: Math.max(1, (prev[drinkId] || 1) - 1) }));
-  };
-
-  const handleToggleTopping = (drinkId: number, toppingId: number) => {
-    setSelectedToppings((prev) => {
-      const current = prev[drinkId] || [];
-      if (current.includes(toppingId)) {
-        return { ...prev, [drinkId]: current.filter((id) => id !== toppingId) };
+  const hdlChangeQty = (value: number) => {
+    setQuantity((cur) => {
+      if ((value = 1)) {
+        return cur + 1;
+      } else if (value == -1 && cur > 1) {
+        return cur - 1;
       } else {
-        return { ...prev, [drinkId]: [...current, toppingId] };
+        return cur;
       }
     });
   };
 
-  const handleAddToCart = (drinkId: number) => {
-    const qty = quantities[drinkId] || 1;
-    const tops = selectedToppings[drinkId] || [];
-    alert(`Added ${qty} x drink ${drinkId} with ${tops.length} toppings!`);
+  const handleToggleTopping = (toppingId: number, toppingName: string, tippingPrice: number) => {
+    setSelectedToppings((prev) => {
+      if (prev.some((t) => t.id === toppingId)) {
+        return prev.filter((t) => t.id !== toppingId);
+      } else {
+        return [...prev, { id: toppingId, name: toppingName, price: tippingPrice }];
+      }
+    });
+  };
+
+  const handleAddToCart = () => {
+    addToCart({
+      id: drink.id,
+      name: drink.name,
+      price: drink.price,
+      quantity: quantity,
+      image: drink.image,
+      toppings: selectedToppings,
+    });
+    console.log("selectedToppings", selectedToppings);
+    // alert(`Added ${qty} x drink ${drinkId} with ${tops.length} toppings!`);
   };
   return (
     <div className="grid grid-cols-1 gap-6 items-stretch">
@@ -201,11 +91,11 @@ export default function ChooseDrink({ drink, toppings }: ChooseDrinkProps) {
                       <input
                         type="checkbox"
                         className="w-4 h-4 accent-green-700"
-                        checked={selectedToppings[drink.id]?.includes(top.id) || false}
-                        onChange={() => handleToggleTopping(drink.id, top.id)}
+                        checked={selectedToppings.some((t) => t.id === top.id)}
+                        onChange={() => handleToggleTopping(top.id, top.name, top.price)}
                       />
+
                       <img src={top.image} alt={top.name} className="h-4 w-4 object-contain" />
-                      {/* ({top.name} {top.price > 0 && `(+฿${top.price})`}) */}
                       {top.price > 0 ? `${top.name} (+฿${top.price})` : top.name + " (Free)"}
                     </label>
                   ))}
@@ -223,15 +113,15 @@ export default function ChooseDrink({ drink, toppings }: ChooseDrinkProps) {
               <button
                 type="button"
                 className="px-3 py-1 text-gray-700 hover:bg-gray-100"
-                onClick={() => handleDecrement(drink.id)}
+                onClick={() => hdlChangeQty(-1)}
               >
                 -
               </button>
-              <span className="px-4">{quantities[drink.id] || 1}</span>
+              <span className="px-4">{quantity}</span>
               <button
                 type="button"
                 className="px-3 py-1 text-gray-700 hover:bg-gray-100"
-                onClick={() => handleIncrement(drink.id)}
+                onClick={() => hdlChangeQty(1)}
               >
                 +
               </button>
@@ -243,17 +133,17 @@ export default function ChooseDrink({ drink, toppings }: ChooseDrinkProps) {
             <p className="text-lg font-semibold text-gray-700">
               Total: ฿
               {(
-                (quantities[drink.id] || 1) *
+                quantity *
                 (drink.price +
-                  (selectedToppings[drink.id]?.reduce(
-                    (sum, topId) => sum + toppings.find((t) => t.id === topId)!.price,
+                  selectedToppings.reduce(
+                    (sum, top) => sum + (toppings.find((t) => t.id === top.id)?.price || 0),
                     0
-                  ) || 0))
+                  ))
               ).toFixed(2)}
             </p>
             <Button
               className="bg-green-700 text-white hover:bg-green-800 rounded-md p-3"
-              onClick={() => handleAddToCart(drink.id)}
+              onClick={handleAddToCart}
               label="Add to Cart"
             />
           </div>

@@ -1,13 +1,20 @@
+"use client";
 import { Clock, Coffee, ShoppingCart } from "lucide-react";
 import CustomLinkButton from "../ui/custom-link-button";
 import Link from "next/link";
 import userStore from "@/hook/store/user-store";
 import CustomButton from "../ui/custom-button";
+import { useRouter } from "next/navigation";
 
 export default function UserHeader() {
   const username = userStore((state) => state.username);
   const logout = userStore((state) => state.logout);
-  console.log("username", username);
+  const router = useRouter();
+
+  const hdlLogout = () => {
+    logout();
+    router.replace("/");
+  };
   return (
     <header className="sticky top-0 z-100 w-full border-b  bg-white">
       <div className=" flex h-16 items-center justify-between px-6">
@@ -37,7 +44,7 @@ export default function UserHeader() {
             <CustomButton
               label="Log out"
               className="p-button-outlined p-button-sm"
-              click={logout}
+              click={hdlLogout}
             />
           ) : (
             <CustomLinkButton label="Login" href="/login" />

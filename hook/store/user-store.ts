@@ -1,10 +1,11 @@
 import { Role } from "@/enum/role";
-import { baristaLogin, userLogin } from "@/libs/apis/auth";
+import { baristaLogin, getMe, userLogin } from "@/libs/apis/auth";
 import { LoginForm } from "@/types/login.type";
+import { ApiResponse } from "@/types/response.type";
 import { isAxiosError } from "axios";
-import { da } from "zod/locales";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import cartStore from "./cart-store";
 
 type UserStore = {
   username: string;
@@ -12,10 +13,12 @@ type UserStore = {
   role: Role | null;
   isHydrated: boolean;
   login: (loginData: LoginForm, roleData: Role) => Promise<Role>;
+  getMe: () => Promise<ApiResponse<{}, {}>>;
   logout: () => void;
+  clearUser: () => void;
 };
 
-const userStore = (set: any): UserStore => ({
+const userStore = (set: any, get: any): UserStore => ({
   username: "",
   token: "",
   role: null,
@@ -30,6 +33,7 @@ const userStore = (set: any): UserStore => ({
       }
       set({ username: data.username, token: data.token, role: data.role });
       if (data.role === Role.USER) {
+        console.log("data.role", data.role);
         return Role.USER;
       } else {
         return Role.BARISTA;
@@ -41,7 +45,26 @@ const userStore = (set: any): UserStore => ({
       throw new Error("Something went wrong");
     }
   },
+  getMe: async () => {
+    try {
+      const data = await getMe();
+      set({ username: data.username, token: data.token, role: data.role });
+      return { success: true, message: "Get me successfully" };
+    } catch (error) {
+      if (isAxiosError(error)) {
+        get().clearUser();
+        const message = error.message;
+        return { success: false, message };
+      }
+      return { success: false, message: "Get me fail" };
+    }
+  },
   logout() {
+    const clearCart = cartStore.getState().clearCart;
+    clearCart();
+    set({ username: "", token: "", role: null });
+  },
+  clearUser: () => {
     set({ username: "", token: "", role: null });
   },
 });

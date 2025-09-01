@@ -4,10 +4,10 @@ export type CartItem = {
   price: number;
   quantity: number;
   image: string;
-  toppings?: Topping[];
+  toppings?: ToppingInCart[];
 };
 
-export type Topping = {
+export type ToppingInCart = {
   id: number;
   name: string;
   price: number;
