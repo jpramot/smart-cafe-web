@@ -13,9 +13,9 @@ export const createOrderSchema = z.object({
 
 export const orderSchemaResponse = z.object({
   id: z.number(),
-  userId: z.number(),
+  username: z.string(),
   createdAt: z.string(),
-  status: z.string(),
+  status: z.enum(["PREPARING", "READY", "COMPLETED"]),
   totalPrice: z.number(),
   items: z.array(
     z.object({

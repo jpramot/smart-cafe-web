@@ -20,7 +20,7 @@ export default function BaristaPage() {
       <BaristaDashBoard orders={orders} />
 
       {/* Orders Table */}
-      <BaristaManagement />
+      <BaristaManagement orders={orders} />
     </div>
   );
 }

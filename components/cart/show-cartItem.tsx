@@ -9,13 +9,16 @@ import { CreateOrderBody } from "@/types/order.type";
 
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useTransition } from "react";
+import CartItemLoading from "./cart-items-loading";
 
 export default function ShowCartItems() {
   const items = cartStore((state) => state.cart);
   const getMe = userStore((state) => state.getMe);
   const deleteFromCart = cartStore((state) => state.deleteFromCart);
   const createOrder = orderStore((state) => state.createOrder);
+  const isCartHydrated = cartStore((state) => state.isCartHydrated);
+  const [isPending, startTransition] = useTransition();
 
   const router = useRouter();
   const total = items.reduce(
@@ -50,13 +53,22 @@ export default function ShowCartItems() {
   };
 
   useEffect(() => {
-    (async () => {
+    const fetchUser = () => {
+      // const response = await getMe();
+      // if (!response.success) {
+      //   router.replace("/login");
+      // }
+    };
+    startTransition(async () => {
       const response = await getMe();
       if (!response.success) {
         router.replace("/login");
       }
-    })();
+    });
   }, []);
+  if (isPending || !isCartHydrated) {
+    return <CartItemLoading />;
+  }
   return (
     <div className="bg-white rounded-xl shadow-md p-6">
       {items.length === 0 ? (

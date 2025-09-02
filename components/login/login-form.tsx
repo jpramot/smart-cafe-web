@@ -23,15 +23,11 @@ export default function LoginForm() {
   });
 
   const onSubmit: SubmitHandler<LoginForm> = async (data: LoginForm) => {
-    try {
-      const uesrRole = await login(data, role);
-      if (uesrRole === Role.USER) {
-        router.replace("/");
-      } else {
-        router.replace("/barista");
-      }
-    } catch (error) {
-      console.log(error);
+    const uesrRole = await login(data, role);
+    if (uesrRole === Role.USER) {
+      router.replace("/");
+    } else {
+      router.replace("/barista");
     }
   };
 
@@ -109,7 +105,6 @@ export default function LoginForm() {
           </button>
         </form>
 
-        {/* Extra */}
         <p className="text-center text-sm text-gray-500 mt-6">
           {role === Role.USER
             ? "Login as customer to order drinks."

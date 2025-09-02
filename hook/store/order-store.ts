@@ -1,15 +1,17 @@
-import { createOrder, getAllOrder, trackOrder } from "@/libs/apis/order";
+import { createOrder, getAllOrder, trackOrder, updateOrderStatus } from "@/libs/apis/order";
 import { CreateOrderBody, OrderResponse } from "@/types/order.type";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import cartStore from "./cart-store";
+import { OrderStatus } from "@/enum/orderStatus";
 
 type OrderStore = {
   orders: OrderResponse[] | null;
   order: OrderResponse | null;
   createOrder: (orderData: CreateOrderBody) => Promise<{ id: number }>;
-  trackOrder: (orderId: string) => Promise<void>;
+  trackOrder: (orderId: string) => Promise<OrderResponse | null>;
   getAllOrder: () => Promise<void>;
+  markAsReady: (id: number) => Promise<void>;
 };
 
 const orderStore = (set: any) => ({
@@ -23,12 +25,28 @@ const orderStore = (set: any) => ({
   },
   trackOrder: async (orderId: string) => {
     const response = await trackOrder(orderId);
-    set({ order: response });
+    return response;
   },
   getAllOrder: async () => {
     const response = await getAllOrder();
 
     set({ orders: response });
+  },
+  markAsReady: async (id: number) => {
+    const body = { status: OrderStatus.READY };
+    const response = await updateOrderStatus(id, body);
+    if (response) {
+      set((state: OrderStore) => {
+        return {
+          orders: state.orders?.map((order: OrderResponse) => {
+            if (order.id === id) {
+              return { ...order, status: OrderStatus.READY };
+            }
+            return order;
+          }),
+        };
+      });
+    }
   },
 });
 

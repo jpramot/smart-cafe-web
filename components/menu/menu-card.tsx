@@ -27,7 +27,7 @@ export default function MenuCard({ id, name, price, image, description, category
   );
 
   const footer = (
-    <div className="flex justify-center my-10">
+    <div className="flex justify-center mb-4">
       <CustomLinkButton
         label="Order now"
         href={`/menu/${id}`}
@@ -43,7 +43,7 @@ export default function MenuCard({ id, name, price, image, description, category
       className="w-64 md:w-72 lg:w-80 shadow-lg rounded-md hover:shadow-xl transition-shadow duration-300 flex flex-col min-h-[400px] mt-8"
       footer={footer}
     >
-      <div className="flex flex-col justify-between h-full p-4">
+      <div className="flex flex-col justify-between h-full">
         <div>
           <h3 className="text-lg font-semibold truncate">{name}</h3>
           <p className="text-sm font-light text-gray-700 line-clamp-3 mt-1 h-[50px]">
@@ -51,7 +51,7 @@ export default function MenuCard({ id, name, price, image, description, category
           </p>
         </div>
 
-        <div className="flex justify-between items-center mt-4">
+        <div className="flex justify-between items-center">
           <p className="text-xl font-semibold text-gray-800">{price} ฿</p>
           <span className="text-xs font-medium text-white text-center bg-green-700 rounded-lg py-1 px-3">
             {category}

@@ -18,5 +18,7 @@ export default function CustomButton({
     "border border-gray-400 hover:cursor-point hover:bg-green-700 px-3 py-2 rounded-md hover:text-white",
     className
   );
-  return <Button label={label} icon={icon} className={mergedClass} {...rest} onClick={click} />;
+  return (
+    <Button unstyled label={label} icon={icon} className={mergedClass} {...rest} onClick={click} />
+  );
 }

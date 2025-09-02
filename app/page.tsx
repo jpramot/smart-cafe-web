@@ -1,6 +1,12 @@
 import MenuList from "@/components/menu/menu-list";
 import Loading from "@/components/ui/loading";
 import { Suspense } from "react";
+// // primereact core
+// import "primereact/resources/primereact.min.css";
+// // primereact theme (เลือกอันที่คุณใช้ เช่น saga-green, lara-light-blue, bootstrap4-dark-blue ฯลฯ)
+// import "primereact/resources/themes/lara-light-blue/theme.css";
+// // primeicons (ถ้ามีใช้ icons ด้วย)
+// import "primeicons/primeicons.css";
 
 export default function Home() {
   return (
