@@ -3,11 +3,9 @@
 import { useRouter } from "next/navigation";
 import CustomButton from "../ui/custom-button";
 import userStore from "@/hook/store/user-store";
-import { Role } from "@/enum/role";
 
 export default function BaristaHeader() {
   const logout = userStore((state) => state.logout);
-  const role = userStore((state) => state.role);
   const router = useRouter();
 
   const hdlLogout = () => {
