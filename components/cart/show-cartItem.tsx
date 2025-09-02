@@ -53,12 +53,6 @@ export default function ShowCartItems() {
   };
 
   useEffect(() => {
-    const fetchUser = () => {
-      // const response = await getMe();
-      // if (!response.success) {
-      //   router.replace("/login");
-      // }
-    };
     startTransition(async () => {
       const response = await getMe();
       if (!response.success) {
@@ -66,6 +60,7 @@ export default function ShowCartItems() {
       }
     });
   }, []);
+
   if (isPending || !isCartHydrated) {
     return <CartItemLoading />;
   }

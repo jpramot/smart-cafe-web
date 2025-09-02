@@ -26,14 +26,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  console.log(true && false);
+
   return (
     <html lang="en">
       <body className={`${poppin.className} bg-gray-50`}>
-        <div className="flex flex-col min-h-screen">
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </div>
+        <main>{children}</main>
       </body>
     </html>
   );

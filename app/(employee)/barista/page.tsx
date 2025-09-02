@@ -14,6 +14,7 @@ export default function BaristaPage() {
       await getAllOrder();
     })();
   }, []);
+
   return (
     <div className="flex flex-col">
       {/* Stats Cards */}

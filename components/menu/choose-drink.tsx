@@ -69,7 +69,7 @@ export default function ChooseDrink({ drink, toppings }: ChooseDrinkProps) {
         <img
           src={drink.image}
           alt={drink.name}
-          className="h-48 w-full object-cover rounded-lg mb-4"
+          className="h-52 w-full object-cover rounded-lg mb-4"
         />
 
         {/* Name & Description */}

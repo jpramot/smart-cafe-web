@@ -3,15 +3,24 @@
 import { useRouter } from "next/navigation";
 import CustomButton from "../ui/custom-button";
 import userStore from "@/hook/store/user-store";
+import { Role } from "@/enum/role";
+import { useEffect } from "react";
 
 export default function BaristaHeader() {
   const logout = userStore((state) => state.logout);
+  const role = userStore((state) => state.role);
   const router = useRouter();
 
   const hdlLogout = () => {
     logout();
     router.replace("/");
   };
+
+  useEffect(() => {
+    if (role !== Role.BARISTA) {
+      router.replace("/");
+    }
+  }, [role]);
 
   return (
     <header className="sticky top-0 z-100 w-full border-b  bg-white">
