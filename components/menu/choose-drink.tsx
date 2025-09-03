@@ -3,6 +3,7 @@
 import cartStore from "@/hook/store/cart-store";
 import { Menu } from "@/types/menu.type";
 import { Topping } from "@/types/topping";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
@@ -66,10 +67,15 @@ export default function ChooseDrink({ drink, toppings }: ChooseDrinkProps) {
         className="flex flex-col justify-between shadow-lg rounded-2xl overflow-hidden p-4"
       >
         {/* Image */}
-        <img
+        <Image
+          // src={drink.image}
+          // alt={drink.name}
+          // className="h-52 w-full object-cover rounded-lg mb-4"
           src={drink.image}
           alt={drink.name}
-          className="h-52 w-full object-cover rounded-lg mb-4"
+          width={400}
+          height={208}
+          className="object-cover rounded-lg mb-4 mx-auto"
         />
 
         {/* Name & Description */}
@@ -102,7 +108,11 @@ export default function ChooseDrink({ drink, toppings }: ChooseDrinkProps) {
                         onChange={() => handleToggleTopping(top.id, top.name, top.price)}
                       />
 
-                      <img src={top.image} alt={top.name} className="h-4 w-4 object-contain" />
+                      {/* <Image src={top.image} alt={top.name} className="h-4 w-4 object-contain" /> */}
+                      <div className="w-4 h-4 relative">
+                        <Image src={top.image} alt={top.name} fill className="object-contain" />
+                      </div>
+
                       {top.price > 0 ? `${top.name} (+฿${top.price})` : top.name + " (Free)"}
                     </label>
                   ))}

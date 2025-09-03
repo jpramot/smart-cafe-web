@@ -19,14 +19,14 @@ export const menuWithToppingsSchema = z.object({
   toppings: toppingSchema.array(),
 });
 
-export const validateMenus = (menus: any): z.infer<typeof menusSchema> => {
+export const validateMenus = (menus: unknown): z.infer<typeof menusSchema> => {
   return menusSchema.parse(menus);
 };
 
-export const validateMenu = (menu: any): z.infer<typeof menuSchema> => {
+export const validateMenu = (menu: unknown): z.infer<typeof menuSchema> => {
   return menuSchema.parse(menu);
 };
 
-export const validateMenuWithToppings = (menu: any): z.infer<typeof menuWithToppingsSchema> => {
+export const validateMenuWithToppings = (menu: unknown): z.infer<typeof menuWithToppingsSchema> => {
   return menuWithToppingsSchema.parse(menu);
 };

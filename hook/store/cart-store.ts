@@ -1,5 +1,5 @@
 import { CartItem } from "@/types/cart.type";
-import { create } from "zustand";
+import { create, StateCreator } from "zustand";
 import { persist } from "zustand/middleware";
 import userStore from "./user-store";
 
@@ -11,7 +11,7 @@ type CartStore = {
   clearCart: () => void;
 };
 
-const cartStore = (set: any, get: any): CartStore => ({
+const cartStore: StateCreator<CartStore> = (set): CartStore => ({
   cart: [],
   isCartHydrated: false,
   addToCart: async (item: CartItem) => {

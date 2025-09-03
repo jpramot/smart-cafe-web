@@ -12,6 +12,6 @@ export const getMenuById = async (id: number): Promise<MenuWithToppings | null> 
     const { data } = await api.get(`/menus/${id}`);
     return validateMenuWithToppings(data);
   } catch (error) {
-    return null;
+    throw error;
   }
 };

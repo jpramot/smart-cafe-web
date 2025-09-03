@@ -5,6 +5,7 @@ import userStore from "@/hook/store/user-store";
 import { loginSchema } from "@/libs/schema/login.schema";
 import { type LoginForm } from "@/types/login.type";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -110,6 +111,14 @@ export default function LoginForm() {
             ? "Login as customer to order drinks."
             : "Login as barista to manage orders."}
         </p>
+        {role === Role.USER && (
+          <p className="text-center text-sm text-gray-500 mt-2">
+            Don&apos;t have an account?{" "}
+            <Link href="/register" className="text-green-700 font-medium hover:underline">
+              Register
+            </Link>
+          </p>
+        )}
       </div>
     </div>
   );

@@ -11,6 +11,7 @@ import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useTransition } from "react";
 import CartItemLoading from "./cart-items-loading";
+import Image from "next/image";
 
 export default function ShowCartItems() {
   const items = cartStore((state) => state.cart);
@@ -47,7 +48,6 @@ export default function ShowCartItems() {
       console.log(error);
       return;
     }
-    console.log("create");
     const response = await createOrder(data);
     router.replace(`/track?orderId=${response.id}`);
   };
@@ -59,7 +59,7 @@ export default function ShowCartItems() {
         router.replace("/login");
       }
     });
-  }, []);
+  }, [getMe, router]);
 
   if (isPending || !isCartHydrated) {
     return <CartItemLoading />;
@@ -72,7 +72,11 @@ export default function ShowCartItems() {
         <ul className="divide-y divide-gray-200">
           {items.map((item, idx) => (
             <li key={idx} className="flex items-start py-4 gap-4">
-              <img src={item.image} alt={item.name} className="w-20 h-20 rounded-md object-cover" />
+              <Image
+                src={item.image}
+                alt={item.name}
+                className="w-20 h-20 rounded-md object-cover"
+              />
 
               <div className="flex-1">
                 <div className="flex justify-between items-start">

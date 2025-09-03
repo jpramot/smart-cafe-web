@@ -12,11 +12,7 @@ export default function TrackInput() {
   const pathName = usePathname();
   const oldSearch = useSearchParams();
   const router = useRouter();
-  const {
-    formState: { errors },
-    handleSubmit,
-    register,
-  } = useForm<TrackForm>({ resolver: zodResolver(trackFormSchema) });
+  const { handleSubmit, register } = useForm<TrackForm>({ resolver: zodResolver(trackFormSchema) });
 
   const onSubmit = (data: TrackForm) => {
     const searchParams = new URLSearchParams(oldSearch);

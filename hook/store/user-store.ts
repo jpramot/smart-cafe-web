@@ -1,9 +1,8 @@
 import { Role } from "@/enum/role";
 import { baristaLogin, getMe, userLogin } from "@/libs/apis/auth";
 import { LoginForm } from "@/types/login.type";
-import { ApiResponse } from "@/types/response.type";
 import { isAxiosError } from "axios";
-import { create } from "zustand";
+import { create, StateCreator } from "zustand";
 import { persist } from "zustand/middleware";
 import cartStore from "./cart-store";
 
@@ -13,12 +12,12 @@ type UserStore = {
   role: Role | null;
   isHydrated: boolean;
   login: (loginData: LoginForm, roleData: Role) => Promise<Role>;
-  getMe: () => Promise<ApiResponse<{}, {}>>;
+  getMe: () => Promise<{ success: boolean; message: string }>;
   logout: () => void;
   clearUser: () => void;
 };
 
-const userStore = (set: any, get: any): UserStore => ({
+const userStore: StateCreator<UserStore> = (set, get): UserStore => ({
   username: "",
   token: "",
   role: null,

@@ -1,13 +1,14 @@
 "use client";
 
 import { Divider } from "primereact/divider";
-import { Image } from "primereact/image";
 import { Card } from "primereact/card";
 import { Tag } from "primereact/tag";
 import orderStore from "@/hook/store/order-store";
 import { useEffect, useState, useTransition } from "react";
 import TrackLoading from "./track-loading";
 import { OrderResponse } from "@/types/order.type";
+import OrderQrCode from "./order-qr";
+import OrderNotFound from "./order-not-found";
 
 type TrackOrderProps = {
   search: string;
@@ -33,11 +34,11 @@ export default function TrackedOrder({ search }: TrackOrderProps) {
     const intervalId = setInterval(fetchOrder, 10000);
 
     return () => clearInterval(intervalId);
-  }, [search]);
+  }, [search, trackOrder]);
 
   if (isPending) return <TrackLoading />;
 
-  if (!trackedOrder && search) return <h1> not found</h1>;
+  if (!trackedOrder && search) return <OrderNotFound />;
 
   return (
     <>
@@ -110,13 +111,14 @@ export default function TrackedOrder({ search }: TrackOrderProps) {
                 <div className="text-center pt-4">
                   <h4 className="font-semibold mb-3">Your Order QR Code</h4>
                   <div className="inline-block p-4 bg-white rounded-lg border">
-                    <Image
+                    {/* <Image
                       src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Order12345"
                       alt="Order QR"
                       width="128"
                       height="128"
                       preview
-                    />
+                    /> */}
+                    <OrderQrCode orderId={trackedOrder.id} username={trackedOrder.username} />
                   </div>
                   <p className="text-xs text-gray-500 mt-2">Show this QR code at pickup</p>
                 </div>

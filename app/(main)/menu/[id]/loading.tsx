@@ -8,7 +8,7 @@ export default function Loading() {
 
         <div className="grid grid-cols-1 gap-6 items-stretch">
           <div className="flex flex-col justify-between shadow-lg rounded-2xl overflow-hidden p-4 animate-pulse">
-            <div className="h-48 w-full bg-gray-300 rounded-lg mb-4"></div>
+            <div className="h-60 w-full bg-gray-300 rounded-lg mb-4"></div>
 
             <div className="space-y-2 mb-4">
               <div className="h-6 w-1/2 bg-gray-300 rounded"></div>

@@ -1,8 +1,6 @@
 import { Metadata } from "next";
 import "./globals.css";
 import { Poppins } from "next/font/google";
-import Header from "@/components/layouts/header";
-import Footer from "@/components/layouts/footer";
 // primereact core
 import "primereact/resources/primereact.min.css";
 // primereact theme (เลือกอันที่คุณใช้ เช่น saga-green, lara-light-blue, bootstrap4-dark-blue ฯลฯ)
@@ -26,8 +24,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  console.log(true && false);
-
   return (
     <html lang="en">
       <body className={`${poppin.className} bg-gray-50`}>

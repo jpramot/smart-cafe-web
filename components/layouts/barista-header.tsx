@@ -5,9 +5,11 @@ import CustomButton from "../ui/custom-button";
 import userStore from "@/hook/store/user-store";
 import { Role } from "@/enum/role";
 import { useEffect } from "react";
+import LayoutLoading from "./layout-loading";
 
 export default function BaristaHeader() {
   const logout = userStore((state) => state.logout);
+  const isHydrated = userStore((state) => state.isHydrated);
   const role = userStore((state) => state.role);
   const router = useRouter();
 
@@ -20,7 +22,11 @@ export default function BaristaHeader() {
     if (role !== Role.BARISTA) {
       router.replace("/");
     }
-  }, [role]);
+  }, [role, router]);
+
+  if (!isHydrated) {
+    return <LayoutLoading />;
+  }
 
   return (
     <header className="sticky top-0 z-100 w-full border-b  bg-white">

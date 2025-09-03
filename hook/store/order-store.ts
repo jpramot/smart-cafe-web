@@ -1,6 +1,6 @@
 import { createOrder, getAllOrder, trackOrder, updateOrderStatus } from "@/libs/apis/order";
 import { CreateOrderBody, OrderResponse } from "@/types/order.type";
-import { create } from "zustand";
+import { create, StateCreator } from "zustand";
 import { persist } from "zustand/middleware";
 import cartStore from "./cart-store";
 import { OrderStatus } from "@/enum/orderStatus";
@@ -14,7 +14,7 @@ type OrderStore = {
   markAsReady: (id: number) => Promise<void>;
 };
 
-const orderStore = (set: any) => ({
+const orderStore: StateCreator<OrderStore> = (set) => ({
   orders: [] as OrderResponse[] | null,
   order: null as OrderResponse | null,
   createOrder: async (orderData: CreateOrderBody) => {

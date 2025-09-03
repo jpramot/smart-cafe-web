@@ -14,10 +14,6 @@ type BaristaManagementProps = {
 
 export default function BaristaManagement({ orders }: BaristaManagementProps) {
   const markAsReady = orderStore((state) => state.markAsReady);
-
-  // const hdlUpdateStatus = async(id: number) => {
-  //   markAsReady(id);
-  // };
   const getSeverity = (status: string) => {
     switch (status) {
       case "PREPARING":
@@ -38,7 +34,7 @@ export default function BaristaManagement({ orders }: BaristaManagementProps) {
   const itemsTemplate = (rowData: OrderResponse) => {
     return (
       <ul className="text-sm space-y-1">
-        {rowData.items.map((item: any, idx: number) => (
+        {rowData.items.map((item: { name: string; quantity: number }, idx: number) => (
           <li key={idx}>
             {item.quantity}x {item.name}
           </li>
