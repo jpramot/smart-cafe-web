@@ -89,7 +89,7 @@ Smart Café คือระบบสั่งซื้อสินค้าแ�
    pnpm install
    ```
 
-3. Set up environment variables (optional)
+3. Set up environment variables
    ```bash
     # Create .env.local file
     NEXT_PUBLIC_API_BASE_URL=your-backend-url-here

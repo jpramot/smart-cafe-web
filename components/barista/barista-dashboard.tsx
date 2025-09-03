@@ -27,9 +27,21 @@ export default function BaristaDashBoard({ orders }: BaristaDashBoardProps) {
   );
   return (
     <section className="py-6 px-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-      <DashboardCard title="Preparing" total={filteredStatus?.["PREPARING"] || 0} />
-      <DashboardCard title="Ready" total={filteredStatus?.["READY"] || 0} />
-      <DashboardCard title="Completed" total={filteredStatus?.["COMPLETED"] || 0} />
+      <DashboardCard
+        title="Preparing"
+        total={filteredStatus?.["PREPARING"] || 0}
+        description="Orders in progress"
+      />
+      <DashboardCard
+        title="Ready"
+        total={filteredStatus?.["READY"] || 0}
+        description="Orders ready to serve"
+      />
+      <DashboardCard
+        title="Completed"
+        total={filteredStatus?.["COMPLETED"] || 0}
+        description="Orders completed"
+      />
     </section>
   );
 }

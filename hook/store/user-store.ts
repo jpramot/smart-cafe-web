@@ -37,10 +37,7 @@ const userStore: StateCreator<UserStore> = (set, get): UserStore => ({
         return Role.BARISTA;
       }
     } catch (error) {
-      if (isAxiosError(error)) {
-        throw error;
-      }
-      throw new Error("Something went wrong");
+      throw error;
     }
   },
   getMe: async () => {

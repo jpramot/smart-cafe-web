@@ -75,6 +75,8 @@ export default function ShowCartItems() {
               <Image
                 src={item.image}
                 alt={item.name}
+                width={80}
+                height={80}
                 className="w-20 h-20 rounded-md object-cover"
               />
 
@@ -91,9 +93,6 @@ export default function ShowCartItems() {
                       item.quantity
                     ).toFixed(2)}
                   </div>
-                  {/* <button onClick={() => {}} className="text-gray-400 hover:text-red-500">
-                      <X size={20} />
-                    </button> */}
                 </div>
 
                 {/* render toppings */}

@@ -4,9 +4,10 @@ import clxs from "clsx";
 type DashboardCardProps = {
   title: string;
   total: number;
+  description: string;
 };
 
-export default function DashboardCard({ title, total }: DashboardCardProps) {
+export default function DashboardCard({ title, total, description }: DashboardCardProps) {
   const textColor = clxs({
     "text-yellow-600": title === "Preparing",
     "text-green-600": title === "Ready",
@@ -18,7 +19,7 @@ export default function DashboardCard({ title, total }: DashboardCardProps) {
       className="border border-gray-200 rounded-md shadow-sm p-4 min-h-full"
     >
       <p className={`text-2xl font-bold my-3 ${textColor}`}>{total}</p>
-      <p className="text-sm text-gray-500">Orders in progress</p>
+      <p className="text-sm text-gray-500">{description}</p>
     </Card>
   );
 }

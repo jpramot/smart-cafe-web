@@ -5,10 +5,12 @@ import userStore from "@/hook/store/user-store";
 import { loginSchema } from "@/libs/schema/login.schema";
 import { type LoginForm } from "@/types/login.type";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { isAxiosError } from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 export default function LoginForm() {
   const login = userStore((state) => state.login);
@@ -24,11 +26,19 @@ export default function LoginForm() {
   });
 
   const onSubmit: SubmitHandler<LoginForm> = async (data: LoginForm) => {
-    const uesrRole = await login(data, role);
-    if (uesrRole === Role.USER) {
-      router.replace("/");
-    } else {
-      router.replace("/barista");
+    try {
+      const uesrRole = await login(data, role);
+      if (uesrRole === Role.USER) {
+        router.replace("/");
+      } else {
+        router.replace("/barista");
+      }
+    } catch (error) {
+      if (isAxiosError(error)) {
+        toast.error(error.response?.data.message);
+        return;
+      }
+      throw error;
     }
   };
 

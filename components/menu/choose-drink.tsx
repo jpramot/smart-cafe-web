@@ -68,14 +68,13 @@ export default function ChooseDrink({ drink, toppings }: ChooseDrinkProps) {
       >
         {/* Image */}
         <Image
-          // src={drink.image}
-          // alt={drink.name}
-          // className="h-52 w-full object-cover rounded-lg mb-4"
           src={drink.image}
           alt={drink.name}
           width={400}
-          height={208}
+          height={400}
+          sizes="100%"
           className="object-cover rounded-lg mb-4 mx-auto"
+          priority
         />
 
         {/* Name & Description */}
@@ -110,7 +109,13 @@ export default function ChooseDrink({ drink, toppings }: ChooseDrinkProps) {
 
                       {/* <Image src={top.image} alt={top.name} className="h-4 w-4 object-contain" /> */}
                       <div className="w-4 h-4 relative">
-                        <Image src={top.image} alt={top.name} fill className="object-contain" />
+                        <Image
+                          src={top.image}
+                          alt={top.name}
+                          sizes="100%"
+                          fill
+                          className="object-contain"
+                        />
                       </div>
 
                       {top.price > 0 ? `${top.name} (+฿${top.price})` : top.name + " (Free)"}

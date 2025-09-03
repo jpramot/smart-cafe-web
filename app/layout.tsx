@@ -7,6 +7,7 @@ import "primereact/resources/primereact.min.css";
 import "primereact/resources/themes/lara-light-blue/theme.css";
 // primeicons (ถ้ามีใช้ icons ด้วย)
 import "primeicons/primeicons.css";
+import { Toaster } from "react-hot-toast";
 
 const poppin = Poppins({
   weight: ["400", "500", "600", "700"],
@@ -27,6 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppin.className} bg-gray-50`}>
+        <Toaster position="bottom-right" toastOptions={{ duration: 3000 }} />
         <main>{children}</main>
       </body>
     </html>
