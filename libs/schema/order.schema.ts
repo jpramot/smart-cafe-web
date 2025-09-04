@@ -3,9 +3,9 @@ import z from "zod";
 export const createOrderSchema = z.object({
   items: z.array(
     z.object({
-      menuId: z.number(),
-      topping: z.array(z.number()).default([]),
-      quantity: z.number().min(1),
+      menuId: z.number("Menu id is required"),
+      topping: z.array(z.number(), "Invalid toppings").default([]),
+      quantity: z.number().min(1, "Quantity must be at least 1"),
     })
   ),
   totalPrice: z.number(),

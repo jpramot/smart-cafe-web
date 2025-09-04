@@ -15,19 +15,11 @@ export const userLogin = async (loginData: LoginForm) => {
 };
 
 export const baristaLogin = async (loginData: LoginForm) => {
-  try {
-    const { data } = await api.post("/auth/barista/login", loginData);
-    return validateLoginResponse(data);
-  } catch (error) {
-    throw error;
-  }
+  const { data } = await api.post("/auth/barista/login", loginData);
+  return validateLoginResponse(data);
 };
 
 export const getMe = async () => {
-  try {
-    const { data } = await api.get("/auth/user/me");
-    return validateLoginResponse(data);
-  } catch (error) {
-    throw error;
-  }
+  const { data } = await api.get("/auth/user/me");
+  return validateLoginResponse(data);
 };

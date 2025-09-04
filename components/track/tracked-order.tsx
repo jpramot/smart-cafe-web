@@ -9,6 +9,7 @@ import TrackLoading from "./track-loading";
 import { OrderResponse } from "@/types/order.type";
 import OrderQrCode from "./order-qr";
 import OrderNotFound from "./order-not-found";
+import toast from "react-hot-toast";
 
 type TrackOrderProps = {
   search: string;
@@ -23,8 +24,12 @@ export default function TrackedOrder({ search }: TrackOrderProps) {
     const fetchOrder = async () => {
       if (search) {
         startTransition(async () => {
-          const response = await trackOrder(search);
-          setTrackedOrder(response);
+          try {
+            const response = await trackOrder(search);
+            setTrackedOrder(response);
+          } catch (_) {
+            toast.error("Please try again");
+          }
         });
       }
     };
@@ -111,13 +116,6 @@ export default function TrackedOrder({ search }: TrackOrderProps) {
                 <div className="text-center pt-4">
                   <h4 className="font-semibold mb-3">Your Order QR Code</h4>
                   <div className="inline-block p-4 bg-white rounded-lg border">
-                    {/* <Image
-                      src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Order12345"
-                      alt="Order QR"
-                      width="128"
-                      height="128"
-                      preview
-                    /> */}
                     <OrderQrCode orderId={trackedOrder.id} username={trackedOrder.username} />
                   </div>
                   <p className="text-xs text-gray-500 mt-2">Show this QR code at pickup</p>

@@ -22,11 +22,12 @@ export default function ChooseDrink({ drink, toppings }: ChooseDrinkProps) {
   const router = useRouter();
 
   const drinkPrice =
-    drink.price + selectedToppings.reduce((total, topping) => total + topping.price, 0);
+    (drink.price + selectedToppings.reduce((total, topping) => total + topping.price, 0)) *
+    quantity;
 
   const hdlChangeQty = (value: number) => {
     setQuantity((cur) => {
-      if ((value = 1)) {
+      if (value == 1) {
         return cur + 1;
       } else if (value == -1 && cur > 1) {
         return cur - 1;

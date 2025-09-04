@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useTransition } from "react";
 import CartItemLoading from "./cart-items-loading";
 import Image from "next/image";
+import toast from "react-hot-toast";
 
 export default function ShowCartItems() {
   const items = cartStore((state) => state.cart);
@@ -34,7 +35,6 @@ export default function ShowCartItems() {
   };
 
   const hdlCreateOrder = async () => {
-    console.log("first");
     const rawData: CreateOrderBody = {
       items: items.map((item) => ({
         menuId: item.id,
@@ -43,9 +43,8 @@ export default function ShowCartItems() {
       })),
       totalPrice: total,
     };
-    const { data, success, error } = createOrderSchema.safeParse(rawData);
+    const { data, success } = createOrderSchema.safeParse(rawData);
     if (!success) {
-      console.log(error);
       return;
     }
     const response = await createOrder(data);
@@ -56,6 +55,7 @@ export default function ShowCartItems() {
     startTransition(async () => {
       const response = await getMe();
       if (!response.success) {
+        toast.error(response.message);
         router.replace("/login");
       }
     });
@@ -64,12 +64,14 @@ export default function ShowCartItems() {
   if (isPending || !isCartHydrated) {
     return <CartItemLoading />;
   }
+
   return (
     <div className="bg-white rounded-xl shadow-md p-6">
       {items.length === 0 ? (
         <p className="text-gray-500 text-center py-10">Your cart is empty ☕</p>
       ) : (
         <ul className="divide-y divide-gray-200">
+          {/* render each items */}
           {items.map((item, idx) => (
             <li key={idx} className="flex items-start py-4 gap-4">
               <Image

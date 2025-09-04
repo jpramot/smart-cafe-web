@@ -28,14 +28,18 @@ const orderStore: StateCreator<OrderStore> = (set) => ({
     return response;
   },
   getAllOrder: async () => {
-    const response = await getAllOrder();
-
-    set({ orders: response });
+    try {
+      const response = await getAllOrder();
+      set({ orders: response });
+    } catch (error) {
+      set({ orders: null });
+      throw error;
+    }
   },
   markAsReady: async (id: number) => {
-    const body = { status: OrderStatus.READY };
-    const response = await updateOrderStatus(id, body);
-    if (response) {
+    try {
+      const body = { status: OrderStatus.READY };
+      await updateOrderStatus(id, body);
       set((state: OrderStore) => {
         return {
           orders: state.orders?.map((order: OrderResponse) => {
@@ -46,6 +50,8 @@ const orderStore: StateCreator<OrderStore> = (set) => ({
           }),
         };
       });
+    } catch (error) {
+      throw error;
     }
   },
 });

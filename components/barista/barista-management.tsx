@@ -7,6 +7,7 @@ import { Card } from "primereact/card";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Tag } from "primereact/tag";
+import toast from "react-hot-toast";
 
 type BaristaManagementProps = {
   orders: OrderResponse[] | null;
@@ -14,6 +15,14 @@ type BaristaManagementProps = {
 
 export default function BaristaManagement({ orders }: BaristaManagementProps) {
   const markAsReady = orderStore((state) => state.markAsReady);
+
+  const hdlUpdateStatus = async (id: number) => {
+    try {
+      await markAsReady(id);
+    } catch (_) {
+      toast.error("Update status failed");
+    }
+  };
   const getSeverity = (status: string) => {
     switch (status) {
       case "PREPARING":
@@ -51,7 +60,7 @@ export default function BaristaManagement({ orders }: BaristaManagementProps) {
           size="small"
           unstyled
           className="bg-green-700 text-white px-2 py-1 hover:bg-green-600 rounded-md"
-          onClick={() => markAsReady(rowData.id)}
+          onClick={() => hdlUpdateStatus(rowData.id)}
         />
       );
     if (rowData.status === "READY") {

@@ -3,9 +3,11 @@
 import { userRegister } from "@/libs/apis/auth";
 import { authRegisterSchema } from "@/libs/schema/register.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { isAxiosError } from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import z from "zod";
 
 export default function RegisterPage() {
@@ -15,15 +17,21 @@ export default function RegisterPage() {
     handleSubmit,
     clearErrors,
     formState: { errors, isSubmitting },
-  } = useForm({ resolver: zodResolver(authRegisterSchema), reValidateMode: "onSubmit" });
+  } = useForm({ resolver: zodResolver(authRegisterSchema) });
 
   const onSubmit = async (data: z.infer<typeof authRegisterSchema>) => {
-    const response = await userRegister(data);
-    console.log(response.message);
-    router.replace("/login");
+    try {
+      const response = await userRegister(data);
+      toast.success(response.message);
+      router.replace("/login");
+    } catch (error) {
+      if (isAxiosError(error)) {
+        toast.error(error.response?.data.message);
+        return;
+      }
+      toast.error("Please try again");
+    }
   };
-
-  const hdlOnchange = (field: "username" | "password" | "confirmPassword") => clearErrors(field);
 
   return (
     <div className="flex justify-center items-center mt-20 bg-gray-50 p-6">
@@ -43,7 +51,6 @@ export default function RegisterPage() {
               type="text"
               className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
               {...register("username")}
-              onChange={() => hdlOnchange("username")}
             />
             {errors.username && (
               <p className="text-red-500 text-sm mt-1">{errors.username.message as string}</p>
@@ -60,7 +67,6 @@ export default function RegisterPage() {
               type="password"
               className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
               {...register("password")}
-              onChange={() => hdlOnchange("password")}
             />
             {errors.password && (
               <p className="text-red-500 text-sm mt-1">{errors.password.message as string}</p>
@@ -77,7 +83,6 @@ export default function RegisterPage() {
               type="password"
               className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
               {...register("confirmPassword")}
-              onChange={() => hdlOnchange("confirmPassword")}
             />
             {errors.confirmPassword && (
               <p className="text-red-500 text-sm mt-1">

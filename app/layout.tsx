@@ -1,11 +1,9 @@
 import { Metadata } from "next";
 import "./globals.css";
 import { Poppins } from "next/font/google";
-// primereact core
+
 import "primereact/resources/primereact.min.css";
-// primereact theme (เลือกอันที่คุณใช้ เช่น saga-green, lara-light-blue, bootstrap4-dark-blue ฯลฯ)
 import "primereact/resources/themes/lara-light-blue/theme.css";
-// primeicons (ถ้ามีใช้ icons ด้วย)
 import "primeicons/primeicons.css";
 import { Toaster } from "react-hot-toast";
 

@@ -27,8 +27,10 @@ const userStore: StateCreator<UserStore> = (set, get): UserStore => ({
     try {
       if (roleData === Role.USER) {
         data = await userLogin(loginData);
-      } else {
+      } else if (roleData === Role.BARISTA) {
         data = await baristaLogin(loginData);
+      } else {
+        throw new Error("Invalid role");
       }
       set({ username: data.username, token: data.token, role: data.role });
       if (data.role === Role.USER) {
@@ -48,10 +50,9 @@ const userStore: StateCreator<UserStore> = (set, get): UserStore => ({
     } catch (error) {
       if (isAxiosError(error)) {
         get().clearUser();
-        const message = error.message;
-        return { success: false, message };
+        return { success: false, message: "Please login again" };
       }
-      return { success: false, message: "Get me fail" };
+      return { success: false, message: "Please login" };
     }
   },
   logout() {

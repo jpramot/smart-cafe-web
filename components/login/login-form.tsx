@@ -38,7 +38,7 @@ export default function LoginForm() {
         toast.error(error.response?.data.message);
         return;
       }
-      throw error;
+      toast.error("Please try again");
     }
   };
 

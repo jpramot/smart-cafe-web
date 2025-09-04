@@ -6,6 +6,7 @@ import orderStore from "@/hook/store/order-store";
 import { useEffect, useTransition } from "react";
 import DashboardLoading from "@/components/barista/dashboard-loading";
 import userStore from "@/hook/store/user-store";
+import toast from "react-hot-toast";
 
 export default function BaristaPage() {
   const getAllOrder = orderStore((state) => state.getAllOrder);
@@ -16,7 +17,11 @@ export default function BaristaPage() {
   useEffect(() => {
     const fetchOrders = () => {
       startTransition(async () => {
-        await getAllOrder();
+        try {
+          await getAllOrder();
+        } catch (error) {
+          toast.error("Please try again");
+        }
       });
     };
     fetchOrders();
