@@ -27,7 +27,8 @@ export default function TrackedOrder({ search }: TrackOrderProps) {
           try {
             const response = await trackOrder(search);
             setTrackedOrder(response);
-          } catch (_) {
+          } catch (error) {
+            console.error(error);
             toast.error("Please try again");
           }
         });

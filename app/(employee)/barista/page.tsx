@@ -20,6 +20,7 @@ export default function BaristaPage() {
         try {
           await getAllOrder();
         } catch (error) {
+          console.error(error);
           toast.error("Please try again");
         }
       });

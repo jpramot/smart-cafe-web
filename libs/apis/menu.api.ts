@@ -8,10 +8,6 @@ export const getAllMenu = async (): Promise<Menus> => {
 };
 
 export const getMenuById = async (id: number): Promise<MenuWithToppings | null> => {
-  try {
-    const { data } = await api.get(`/menus/${id}`);
-    return validateMenuWithToppings(data);
-  } catch (error) {
-    throw error;
-  }
+  const { data } = await api.get(`/menus/${id}`);
+  return validateMenuWithToppings(data);
 };

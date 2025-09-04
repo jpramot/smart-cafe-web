@@ -15,7 +15,6 @@ export default function RegisterPage() {
   const {
     register,
     handleSubmit,
-    clearErrors,
     formState: { errors, isSubmitting },
   } = useForm({ resolver: zodResolver(authRegisterSchema) });
 

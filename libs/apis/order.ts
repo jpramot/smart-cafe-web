@@ -1,7 +1,6 @@
 import { CreateOrderBody } from "@/types/order.type";
 import { api } from "./axios";
 import { validateOrderResponse, validateOrdersResponse } from "../schema/order.schema";
-import { ZodError } from "zod";
 import { OrderStatus } from "@/enum/orderStatus";
 import { isAxiosError } from "axios";
 

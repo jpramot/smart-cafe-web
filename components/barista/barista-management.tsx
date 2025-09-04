@@ -19,7 +19,8 @@ export default function BaristaManagement({ orders }: BaristaManagementProps) {
   const hdlUpdateStatus = async (id: number) => {
     try {
       await markAsReady(id);
-    } catch (_) {
+    } catch (error) {
+      console.error(error);
       toast.error("Update status failed");
     }
   };
